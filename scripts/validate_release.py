@@ -32,8 +32,14 @@ def main():
         table = r['table_code'].lower()
         if table not in counts or counts[table] != r['records']:
             raise RuntimeError(f"Record-count mismatch: {table}")
+    sha256 = hashlib.sha256()
+
     with db.open('rb') as f:
-        digest = hashlib.file_digest(f, 'sha256').hexdigest()
+        for chunk in iter(lambda: f.read(1024 * 1024), b''):
+            sha256.update(chunk)
+
+    digest = sha256.hexdigest()
+    
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=True)
     report = {'generated_at_utc': datetime.now(timezone.utc).isoformat(), 'file_name': db.name, 'size_bytes': db.stat().st_size, 'sha256': digest, 'integrity_check': integrity, 'row_counts': counts, 'schema': schema, 'source_registry': registry}
