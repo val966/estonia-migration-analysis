@@ -1,67 +1,117 @@
-# Estonia Migration: Open-data starter project
+# Estonia Migration Analysis
 
-Official source: [Statistics Estonia — Migration](https://andmed.stat.ee/en/stat/rahvastik__rahvastikusundmused__ranne)
-API specification: https://andmed.stat.ee/abi/API-manual.pdf
+Проект по сбору и анализу официальной статистики миграции Эстонии. Данные загружаются из **Statistics Estonia** в одну базу **SQLite**; SQL и Python используются для проверки качества, исследования тенденций и поиска аномалий.
 
-## First run
+**Источник:** [Statistics Estonia — Migration](https://andmed.stat.ee/en/stat/rahvastik__rahvastikusundmused__ranne) · [API](https://andmed.stat.ee/abi/API-manual.pdf)
 
-1. Install Python 3.10+ and enter project folder.
-2. `python -m pip install -r requirements.txt`
-3. Quick test: `python scripts/download.py --tables RVR03 --latest-years 2`
-4. All four tables, all published years: `python scripts/download.py`
-5. Inspect database: `python scripts/inspect_db.py`
+## Технологии и версии
 
-Generated artifacts:
-- `data/estonia_migration.sqlite`: SQLite database; one table per RVR identifier
-- `data/metadata/RVRxx.json`: official dimension metadata (codes and labels)
-- `source_registry`: download date, row counts, source URLs
+| Компонент | Версия / требование | Назначение |
+|---|---|---|
+| Python | **3.10+** (первоначальная среда: 3.10.12) | Загрузка и анализ данных |
+| `pandas` | **>=2.1,<3** | Таблицы и вычисления |
+| `requests` | **>=2.31,<3** | Запросы к API Statistics Estonia |
+| SQLite / `sqlite3` | Версия зависит от установленного SQLite и Python | Хранение данных и SQL-запросы; модуль `sqlite3` входит в Python |
+| Git + GitHub | Версия Git зависит от среды | Совместная работа и история изменений |
+| VS Code + Ubuntu/WSL | Версии не фиксируются | Рекомендуемая среда разработки |
 
-## Google Colab
-
-Upload this ZIP through the Files pane and run:
-
-```python
-!unzip -q estonia_migration_starter.zip
-%cd estonia_migration_starter
-!pip -q install -r requirements.txt
-!python scripts/download.py --tables RVR03 --latest-years 2
-!python scripts/inspect_db.py
-```
-
-Then remove `--latest-years 2` to download all years (some tables may take time).
-
-## Important limitations
-
-- No data is included in this ZIP. The extractor needs network access when run.
-- This project has NOT been live-tested against the official API in the current environment. The official URL and GET/POST protocol are documented, but the live server may require adjustments.
-- CSV fields are ingested as TEXT, preserving missing-value codes and labels. Cast carefully before numeric analysis.
-- The database is not published automatically. To publish a small vetted snapshot, remove the `data/*.sqlite` entry from `.gitignore`, ensure file size <100 MB, and commit it.
-- Do not add up values across distinct tables or duplicate 'total' categories.
-- Changes in migration methodology affect time series comparability (especially 2016).
-- Source attribution: Statistics Estonia; check applicable attribution/share-alike license before redistributing database extracts.
-- Never put Supabase credentials or API keys in the public repository.
-
-## First exploratory anomaly screen
-
-`python scripts/anomalies.py`
-
-Analyzes RVR03 time series separately for each category combination, flagging year-to-year
-changes of at least 50% when the prior year's absolute value is at least 100. It writes
-`data/candidate_anomalies.csv`. **This is an arbitrary screening heuristic, not proof
-of anomalies**. The script detects year/value columns heuristically; check results carefully.
-
-## SQLite + GitHub: handing off exactly the same data
-
-Keep Python/SQL/metadata files under version control. The `.gitignore` excludes generated SQLite files: do not accidentally commit a large or unvalidated database. After your final data refresh:
+`requirements.txt` задаёт **диапазоны версий**, а не точные версии установленной среды. Проверить фактические версии:
 
 ```bash
-python scripts/download.py
-python scripts/inspect_db.py
-python scripts/validate_release.py
+python3 --version
+sqlite3 --version
+python3 -c "import sqlite3; print('SQLite (Python):', sqlite3.sqlite_version)"
+git --version
+# После активации .venv:
+python -m pip show pandas requests
 ```
 
-Review `release/validation_report.json` (tables, columns and record counts). Upload **the exact file** `data/estonia_migration.sqlite` plus `release/SHA256SUMS`, `release/validation_report.json` and your code/metadata to a *tagged GitHub Release*, e.g. `v1.0`. Use an immutable release and record its URL in the README. Everyone should download this frozen database rather than rerun the API when reproducing the team's analyses. The shared database should be opened read-only for ordinary analysis.
+## Структура проекта
 
-Check the SHA-256 digest of the downloaded `.sqlite` against `SHA256SUMS`. Any different checksum means it is not identical. Do not write modifications to the published snapshot: make a working copy for experiments.
+| Файл / каталог | Назначение |
+|---|---|
+| `README.md` | Общая инструкция по проекту |
+| `requirements.txt` | Обязательные зависимости Python |
+| `.gitignore` | Исключения для Git (виртуальная среда, локальные артефакты) |
+| `DATA_DICTIONARY.md` | Описание таблиц, полей и ограничений интерпретации |
+| `scripts/download.py` | Загрузка таблиц из API и обновление локальной SQLite-базы |
+| `scripts/inspect_db.py` | Список таблиц, столбцов, число строк и примеры записей |
+| `scripts/validate_release.py` | Проверка целостности БД; формирование отчёта и SHA-256 |
+| `scripts/anomalies.py` | Предварительный поиск резких изменений в RVR03 (порог 50%) |
+| `scripts/test_yearly_anomalies.py`* | Тест Modified Z-score для годовой внешней иммиграции |
+| `scripts/create_snapshot.py`* | Создание отдельных `.db`-снимков базы |
+| `sql/examples.sql` | Примеры запросов к исходным таблицам |
+| `sql/quality_checks.sql` | Проверки охвата, категорий, дубликатов и необычных значений |
+| `sql/migration_yearly.sql` | Временный VIEW годовой внешней миграции и проверка сальдо |
+| `data/estonia_migration.sqlite` | **Рабочая база** (создаётся при загрузке, не хранится в Git) |
+| `data/metadata/RVR*.json` | Метаданные таблиц, полученные из API |
+| `data/candidate_anomalies.csv` | Результат `anomalies.py` |
+| `data/yearly_anomalies.csv`* | Результат теста Modified Z-score |
+| `data/snapshots/*.db`* | Локальные снимки базы |
+| `release/validation_report.json` | Отчёт о проверке конкретной версии БД |
+| `release/SHA256SUMS` | SHA-256-хеш проверенной БД для сверки при передаче |
 
-The script verifies SQLite `PRAGMA integrity_check`, row-count agreement with `source_registry`, and lists schema; it cannot certify correctness against the original API unless the full extraction is successfully run and inspected. A test with `--latest-years 2` is **not** a full release snapshot. Missing-value rules, source category meaning and aggregates must be audited separately.
+\* **Дополнительные файлы:** используй соответствующие команды только в том случае, если эти файлы созданы и добавлены в репозиторий. Папки `data/` и `release/` частично формируются автоматически и могут отсутствовать сразу после `git clone`.
+
+**Текущие исходные таблицы:** `rvr03` (2000–2025), `rvr05`, `rvr08`, `rvr051` (2004–2025); служебная таблица `source_registry` хранит источники, даты получения и число строк. В дальнейшем планируется добавление демографических таблиц.
+
+## Первый запуск (Ubuntu / VS Code)
+
+Выполняй команды **из корня проекта**, где лежит `requirements.txt`:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+Для следующих сеансов достаточно перейти в каталог проекта и выполнить `source .venv/bin/activate`.
+
+## Основные команды
+
+```bash
+# Полная загрузка/обновление всех четырёх исходных таблиц
+python scripts/download.py
+
+# Обновить одну исходную таблицу
+python scripts/download.py --tables RVR05
+
+# Посмотреть структуру и записи
+python scripts/inspect_db.py
+
+# Первичный поиск кандидатов в аномалии (RVR03)
+python scripts/anomalies.py
+
+# Дополнительный тест
+python scripts/test_yearly_anomalies.py
+```
+
+**Важно:** `download.py` **заменяет содержимое запрашиваемой исходной таблицы**. Для воспроизводимого анализа используйте общий проверенный снимок, а не независимо перезагруженные данные.
+
+### SQL-проверки
+
+Понадобится установленный SQLite CLI (`sudo apt install sqlite3`). Из корня проекта:
+
+```bash
+sqlite3 -readonly -header -column data/estonia_migration.sqlite < sql/quality_checks.sql
+sqlite3 -readonly -header -column data/estonia_migration.sqlite < sql/migration_yearly.sql
+```
+
+`migration_yearly.sql` создаёт **временный VIEW** только для текущего подключения, а затем выводит годовые показатели и проверку `immigration - emigration = net_migration`; исходная база не изменяется.
+
+### Снимок базы и подготовка к передаче
+
+```bash
+# Создать согласованную копию SQLite с расширением .db
+sqlite3 data/estonia_migration.sqlite ".backup 'data/estonia_migration_v0.1.db'"
+
+# Проверить именно эту копию и получить release/validation_report.json и SHA256SUMS
+python scripts/validate_release.py --db data/estonia_migration_v0.1.db
+
+# Проверить структуру файла
+sqlite3 -readonly data/estonia_migration_v0.1.db "PRAGMA integrity_check;"
+```
+
+Если присутствует `scripts/create_snapshot.py`, альтернативный запуск: `python scripts/create_snapshot.py`. **`.db` и `.sqlite` — один формат SQLite; расширение не требует конвертации.**
+
+Для передачи другой команде публикуем **один неизменяемый `.db`-снимок** вместе с `release/validation_report.json` и `release/SHA256SUMS` в **GitHub Release**. Приложенные контрольные суммы должны относиться именно к публикуемому файлу. Для Python 3.10 в `validate_release.py` должна использоваться совместимая реализация SHA-256 без `hashlib.file_digest()`.
