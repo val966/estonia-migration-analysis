@@ -1,0 +1,94 @@
+{
+  "max_cells_per_request": 12000,
+  "tables": {
+    "EH045": {
+      "provider": "statistics_estonia",
+      "title": "Building permits and completed dwellings by county",
+      "time": "quarterly",
+      "ui_url": "https://andmed.stat.ee/en/stat/majandus__ehitus__ehitus-ja-kasutusload/EH045",
+      "sqlite_table": "eh045",
+      "add_provenance": false
+    },
+    "HT140U": {
+      "provider": "statistics_estonia",
+      "title": "General education students, languages and county",
+      "time": "annual",
+      "ui_url": "https://andmed.stat.ee/en/stat/sotsiaalelu__haridus__uldharidus/HT140U",
+      "sqlite_table": "ht140u",
+      "add_provenance": false
+    },
+    "JS009": {
+      "provider": "statistics_estonia",
+      "title": "Recorded offences by county and type (2006–2021)",
+      "time": "annual",
+      "ui_url": "https://andmed.stat.ee/en/stat/Lepetatud_tabelid__Sotsiaalelu.%20Arhiiv__eigus%20ja%20turvalisus.%20Arhiiv__kuritegevus/JS009",
+      "sqlite_table": "js009",
+      "add_provenance": false
+    },
+    "NH01": {
+      "provider": "tai",
+      "title": "Notifiable communicable diseases by county",
+      "time": "annual",
+      "ui_url": "https://statistika.tai.ee/pxweb/en/Andmebaas/Andmebaas__02Haigestumus__02Nakkushaigused/NH01.px/",
+      "api_candidates": [
+        "https://statistika.tai.ee/pxweb/api/v1/en/Andmebaas/02Haigestumus/02Nakkushaigused/NH01",
+        "https://statistika.tai.ee/pxweb/api/v1/en/Andmebaas/Andmebaas__02Haigestumus__02Nakkushaigused/NH01",
+        "https://statistika.tai.ee/pxweb/api/v1/en/Andmebaas/Andmebaas__02Haigestumus__02Nakkushaigused/NH01.px"
+      ],
+      "sqlite_table": "nh01",
+      "add_provenance": false
+    },
+    "RV028U": {
+      "provider": "statistics_estonia",
+      "title": "Mean annual population",
+      "time": "annual",
+      "ui_url": "https://andmed.stat.ee/en/stat/rahvastik__rahvastikunaitajad-ja-koosseis__rahvaarv-ja-rahvastiku-koosseis/RV028U",
+      "sqlite_table": "rv028u",
+      "add_provenance": false
+    },
+    "RVR03": {
+      "provider": "statistics_estonia",
+      "category": "migration",
+      "sqlite_table": "rvr03",
+      "add_provenance": true,
+      "title": "Migration table RVR03",
+      "time": "annual",
+      "ui_url": "https://andmed.stat.ee/en/stat/rahvastik__rahvastikusundmused__ranne/RVR03"
+    },
+    "RVR05": {
+      "provider": "statistics_estonia",
+      "category": "migration",
+      "sqlite_table": "rvr05",
+      "add_provenance": true,
+      "title": "Migration table RVR05",
+      "time": "annual",
+      "ui_url": "https://andmed.stat.ee/en/stat/rahvastik__rahvastikusundmused__ranne/RVR05"
+    },
+    "RVR051": {
+      "provider": "statistics_estonia",
+      "category": "migration",
+      "sqlite_table": "rvr051",
+      "add_provenance": true,
+      "title": "Migration table RVR051",
+      "time": "annual",
+      "ui_url": "https://andmed.stat.ee/en/stat/rahvastik__rahvastikusundmused__ranne/RVR051"
+    },
+    "RVR08": {
+      "provider": "statistics_estonia",
+      "category": "migration",
+      "sqlite_table": "rvr08",
+      "add_provenance": true,
+      "title": "Migration table RVR08",
+      "time": "annual",
+      "ui_url": "https://andmed.stat.ee/en/stat/rahvastik__rahvastikusundmused__ranne/RVR08"
+    },
+    "TT4661": {
+      "provider": "statistics_estonia",
+      "title": "Employment and labour force by county",
+      "time": "annual",
+      "ui_url": "https://andmed.stat.ee/en/stat/sotsiaalelu__tooturg__tooturu-uldandmed__aastastatistika/TT4661",
+      "sqlite_table": "tt4661",
+      "add_provenance": false
+    }
+  }
+}
