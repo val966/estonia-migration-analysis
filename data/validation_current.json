@@ -1,0 +1,147 @@
+{
+  "generated_at_utc": "2026-10-13T18:06:21.815809+00:00",
+  "database": "estonia_migration.sqlite",
+  "integrity_check": "ok",
+  "datasets": {
+    "EH045": {
+      "table": "raw_eh045",
+      "status": "loaded",
+      "rows": 294624,
+      "columns": [
+        "Indicator",
+        "Type of construction",
+        "Type of permit",
+        "County",
+        "Type of residential building",
+        "Reference period",
+        "EH045: GRANTED BUILDING PERMITS AND COMPLETED DWELLINGS BY TYPE OF CONSTRUCTION, COUNTY AND TYPE OF RESIDENTIAL BUILDING"
+      ],
+      "provider": "statistics_estonia",
+      "partial_years": false
+    },
+    "HT140U": {
+      "table": "raw_ht140u",
+      "status": "loaded",
+      "rows": 680400,
+      "columns": [
+        "Indicator",
+        "Sex",
+        "Mother tongue",
+        "Education level",
+        "County of residence",
+        "Form of study",
+        "Language of instruction",
+        "Reference period",
+        "HT140U: ENROLMENTS, DROPOUTS AND GRADE REPEATERS IN GENERAL EDUCATION"
+      ],
+      "provider": "statistics_estonia",
+      "partial_years": false
+    },
+    "JS009": {
+      "table": "raw_js009",
+      "status": "loaded",
+      "rows": 10656,
+      "columns": [
+        "Degree/type of offence",
+        "County",
+        "Year",
+        "JS009: RECORDED OFFENCES"
+      ],
+      "provider": "statistics_estonia",
+      "partial_years": false
+    },
+    "NH01": {
+      "table": "nh01",
+      "status": "loaded",
+      "rows": 5772,
+      "columns": [
+        "Year",
+        "Diagnosis (ICD-10)",
+        "Sex",
+        "Number Estonia",
+        "Number Harju county",
+        "Number ..Tallinn",
+        "Number Hiiu county",
+        "Number Ida-Viru county",
+        "Number ..Narva",
+        "Number Jõgeva county",
+        "Number Järva county",
+        "Number Lääne county",
+        "Number Lääne-Viru county",
+        "Number Põlva county",
+        "Number Pärnu county",
+        "Number Rapla county",
+        "Number Saare county",
+        "Number Tartu county",
+        "Number Valga county",
+        "Number Viljandi county",
+        "Number Võru county",
+        "Rate per 100 000 inhabitants Estonia",
+        "Rate per 100 000 inhabitants Harju county",
+        "Rate per 100 000 inhabitants ..Tallinn",
+        "Rate per 100 000 inhabitants Hiiu county",
+        "Rate per 100 000 inhabitants Ida-Viru county",
+        "Rate per 100 000 inhabitants ..Narva",
+        "Rate per 100 000 inhabitants Jõgeva county",
+        "Rate per 100 000 inhabitants Järva county",
+        "Rate per 100 000 inhabitants Lääne county",
+        "Rate per 100 000 inhabitants Lääne-Viru county",
+        "Rate per 100 000 inhabitants Põlva county",
+        "Rate per 100 000 inhabitants Pärnu county",
+        "Rate per 100 000 inhabitants Rapla county",
+        "Rate per 100 000 inhabitants Saare county",
+        "Rate per 100 000 inhabitants Tartu county",
+        "Rate per 100 000 inhabitants Valga county",
+        "Rate per 100 000 inhabitants Viljandi county",
+        "Rate per 100 000 inhabitants Võru county"
+      ],
+      "provider": "tai",
+      "partial_years": true
+    },
+    "RV028U": {
+      "table": "raw_rv028u",
+      "status": "loaded",
+      "rows": 4887,
+      "columns": [
+        "Place of residence",
+        "Sex",
+        "Year",
+        "RV028U: MEAN ANNUAL POPULATION"
+      ],
+      "provider": "statistics_estonia",
+      "partial_years": false
+    },
+    "RVR03": {
+      "table": "rvr03",
+      "status": "not_loaded"
+    },
+    "RVR05": {
+      "table": "rvr05",
+      "status": "not_loaded"
+    },
+    "RVR051": {
+      "table": "rvr051",
+      "status": "not_loaded"
+    },
+    "RVR08": {
+      "table": "rvr08",
+      "status": "not_loaded"
+    },
+    "TT4661": {
+      "table": "raw_tt4661",
+      "status": "loaded",
+      "rows": 69375,
+      "columns": [
+        "Indicator",
+        "Region/county",
+        "Group of persons",
+        "Reference period",
+        "TT4661: LABOUR FORCE, EMPLOYED PERSONS, LABOUR FORCE PARTICIPATION RATE AND EMPLOYMENT RATE"
+      ],
+      "provider": "statistics_estonia",
+      "partial_years": false
+    }
+  },
+  "errors": [],
+  "status": "ok"
+}

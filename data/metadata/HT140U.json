@@ -1,0 +1,188 @@
+{
+  "title": "HT140U: ENROLMENTS, DROPOUTS AND GRADE REPEATERS IN GENERAL EDUCATION BY SEX, EDUCATION LEVEL, FORM OF STUDY, LANGUAGE OF INSTRUCTION, MOTHER TONGUE AND COUNTY OF RESIDENCE",
+  "variables": [
+    {
+      "code": "Näitaja",
+      "text": "Indicator",
+      "values": [
+        "ENRL",
+        "DROP",
+        "REPEAT"
+      ],
+      "valueTexts": [
+        "Enrolments",
+        "Dropouts",
+        "Grade repeaters"
+      ]
+    },
+    {
+      "code": "Sugu",
+      "text": "Sex",
+      "values": [
+        "T",
+        "M",
+        "F"
+      ],
+      "valueTexts": [
+        "Total",
+        "Males",
+        "Females"
+      ],
+      "elimination": true
+    },
+    {
+      "code": "Emakeel",
+      "text": "Mother tongue",
+      "values": [
+        "TOTAL",
+        "EST",
+        "RUS",
+        "OTH",
+        "UNK"
+      ],
+      "valueTexts": [
+        "Total",
+        "Estonian",
+        "Russian",
+        "Other",
+        "Unknown"
+      ],
+      "elimination": true
+    },
+    {
+      "code": "Õppetase",
+      "text": "Education level",
+      "values": [
+        "STAGE_TOTAL",
+        "FE_STAGE_1",
+        "FE_STAGE_2",
+        "FE_STAGE_3",
+        "FE_STAGE_GYMN"
+      ],
+      "valueTexts": [
+        "Stages total",
+        "..Stage I (grades 1-3)",
+        "..Stage II (grades 4-6)",
+        "..Stage III (grades 7-9)",
+        "..Gymnasium (grades 10-12)"
+      ],
+      "elimination": true
+    },
+    {
+      "code": "Elukoha maakond",
+      "text": "County of residence",
+      "values": [
+        "EE",
+        "EE00370000000000",
+        "EE00370784000004",
+        "EE00370000000000_X_0784",
+        "EE00390000000000",
+        "EE00450000000000",
+        "EE00500000000000",
+        "EE00520000000000",
+        "EE00560000000000",
+        "EE00600000000000",
+        "EE00640000000000",
+        "EE00680000000000",
+        "EE00710000000000",
+        "EE00740000000000",
+        "EE00790000000000",
+        "EE00790793000001",
+        "EE00790000000000_X_0793",
+        "EE00810000000000",
+        "EE00840000000000",
+        "EE00870000000000",
+        "EE00000000000000"
+      ],
+      "valueTexts": [
+        "Estonia",
+        "..Harju county",
+        "....Tallinn",
+        "....Harju county, excl. Tallinn",
+        "..Hiiu county",
+        "..Ida-Viru county",
+        "..Jõgeva county",
+        "..Järva county",
+        "..Lääne county",
+        "..Lääne-Viru county",
+        "..Põlva county",
+        "..Pärnu county",
+        "..Rapla county",
+        "..Saare county",
+        "..Tartu county",
+        "....Tartu city",
+        "....Tartu county, excl. Tartu city",
+        "..Valga county",
+        "..Viljandi county",
+        "..Võru county",
+        "..Not specified"
+      ],
+      "elimination": true
+    },
+    {
+      "code": "Vaatlusperiood",
+      "text": "Reference period",
+      "values": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "valueTexts": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "time": true
+    },
+    {
+      "code": "Õppevorm",
+      "text": "Form of study",
+      "values": [
+        "TOTAL",
+        "STAT",
+        "NON_STAT"
+      ],
+      "valueTexts": [
+        "Total",
+        "..Stationary",
+        "..Non-stationary studies"
+      ],
+      "elimination": true
+    },
+    {
+      "code": "Õppekeel",
+      "text": "Language of instruction",
+      "values": [
+        "TOTAL",
+        "EST",
+        "RUS",
+        "OTH"
+      ],
+      "valueTexts": [
+        "Total",
+        "Estonian",
+        "Russian",
+        "Other"
+      ],
+      "elimination": true
+    }
+  ]
+}
