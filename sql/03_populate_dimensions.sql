@@ -1,0 +1,3 @@
+-- Dimensions are populated together with fact rows using:
+-- python3 scripts/populate_model.py --db data/estonia_migration.sqlite
+-- This ensures dataset-scoped unique labels and safe cross-source parsing.

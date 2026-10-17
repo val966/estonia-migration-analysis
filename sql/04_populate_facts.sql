@@ -1,0 +1,3 @@
+-- Fact observations are populated together with dimensions using:
+-- python3 scripts/populate_model.py --db data/estonia_migration.sqlite
+-- Do not run uncontrolled INSERT/SELECT from differently shaped source tables.
