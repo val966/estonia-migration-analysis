@@ -1,0 +1,14 @@
+{
+  "worldbank": {
+    "country": "EST",
+    "indicators": ["NY.GDP.PCAP.KD", "NY.GDP.MKTP.KD.ZG", "SL.UEM.TOTL.ZS", "FP.CPI.TOTL.ZG", "SP.DYN.LE00.IN", "SM.POP.NETM"],
+    "table": "worldbank_estonia",
+    "url": "https://api.worldbank.org/v2/country/EST/indicator"
+  },
+  "eurostat": {
+    "dataset": "migr_imm4ctb", "geo": "EE", "age": "TOTAL", "sex": ["M", "F", "T"],
+    "freq": "A", "unit": "NR", "agedef": "REACH",
+    "table": "eurostat_migr_imm4ctb",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm4ctb"
+  }
+}

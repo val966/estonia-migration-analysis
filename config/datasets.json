@@ -89,6 +89,14 @@
       "ui_url": "https://andmed.stat.ee/en/stat/sotsiaalelu__tooturg__tooturu-uldandmed__aastastatistika/TT4661",
       "sqlite_table": "tt4661",
       "add_provenance": false
+    },
+    "LFSA_EEGATM": {
+        "provider": "eurostat",
+        "title": "Employment by type of contract and migration status",
+        "time": "annual",
+        "ui_url": "https://ec.europa.eu/eurostat/databrowser/view/lfsa_eegatm/default/table?lang=en",
+        "sqlite_table": "lfsa_eegatm",
+        "add_provenance": false
     }
   }
 }
