@@ -18,8 +18,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = ROOT / 'config' / 'datasets.json'
-DEFAULT_DB = ROOT / 'data' / 'estonia_migration.sqlite'
+CONFIG = ROOT / '..' / 'config' / 'datasets.json'
+DEFAULT_DB = ROOT / '..' / 'data' / 'estonia_migration.sqlite'
 
 
 def identifier(name: str) -> str:

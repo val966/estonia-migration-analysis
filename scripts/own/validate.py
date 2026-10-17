@@ -12,8 +12,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = json.loads((ROOT / 'config' / 'datasets.json').read_text(encoding='utf-8'))
-DEFAULT_DB = ROOT / 'data' / 'estonia_migration.sqlite'
+CONFIG = json.loads((ROOT / '..' / 'config' / 'datasets.json').read_text(encoding='utf-8'))
+DEFAULT_DB = ROOT / '..' / 'data' / 'estonia_migration.sqlite'
 
 
 def quote_identifier(identifier):
@@ -70,7 +70,7 @@ def validate_database(db_path, require_all=False, require_full=False):
             if registry_table not in tables:
                 continue
             for code, rows in con.execute(f'SELECT table_code,{mapping[0][1]} FROM '+quote_identifier(registry_table)):
-                table = code.lower() if registry_table == 'source_registry' else 'raw_'+code.lower()
+                table = code.lower() if registry_table == 'source_registry' else code.lower()
                 if table not in tables:
                     failures.append(f'{registry_table}: missing table {table}')
                 else:
@@ -89,13 +89,13 @@ def main():
     parser.add_argument('--require-all', action='store_true', help='Require all configured datasets')
     parser.add_argument('--require-full', action='store_true', help='Reject smoke-test/partial-year datasets')
     parser.add_argument('--release', action='store_true', help='Write release report and SHA256SUMS; requires --require-all --require-full')
-    parser.add_argument('--output-dir', type=Path, default=ROOT / 'release')
+    parser.add_argument('--output-dir', type=Path, default=ROOT / '..' / 'release')
     args = parser.parse_args()
     if args.release and not (args.require_all and args.require_full):
         parser.error('--release requires --require-all and --require-full')
     try:
         report = validate_database(args.db, args.require_all, args.require_full)
-        out = args.output_dir if args.release else ROOT / 'data'
+        out = args.output_dir if args.release else ROOT / '..' / 'data'
         out.mkdir(parents=True, exist_ok=True)
         filename = 'validation_report.json' if args.release else 'validation_current.json'
         (out / filename).write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
