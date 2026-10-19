@@ -1,12 +1,65 @@
 {
-  "years": {"min": 2000, "max": 2025},
-  "missing_values": ["", "..", ":", "-", "…", ".", "NA", "N/A", "null"],
-  "sex_aliases": {
-    "M": ["M", "Male", "Males", "Men"],
-    "F": ["F", "Female", "Females", "Women"],
-    "T": ["T", "Total", "Both sexes", "Males and females", "Men and women"]
+  "years": {
+    "min": 2000,
+    "max": 2025
   },
-  "region_country_aliases": ["Estonia", "Whole country", "EE"],
+  "missing_values": [
+    "",
+    "..",
+    ":",
+    "-",
+    "…",
+    ".",
+    "NA",
+    "N/A",
+    "null"
+  ],
+  "sex_aliases": {
+    "M": [
+      "M",
+      "Male",
+      "Males",
+      "Men"
+    ],
+    "F": [
+      "F",
+      "Female",
+      "Females",
+      "Women"
+    ],
+    "T": [
+      "T",
+      "Total",
+      "Both sexes",
+      "Males and females",
+      "Men and women"
+    ]
+  },
+  "region_country_aliases": [
+    "Estonia",
+    "Whole country",
+    "EE"
+  ],
   "duplicate_policy": "deduplicate exact statistical source records within each source table, excluding ingestion metadata columns source_table and retrieved_at_utc; retain different categories and observations",
-  "unknown_region_policy": "keep original geographic label in source_region_label; leave region_id NULL unless a national total or one of the 15 exact county labels"
+  "unknown_region_policy": "keep original geographic label in source_region_label; leave region_id NULL unless a national total or one of the 15 exact county labels",
+  "compact_model": {
+    "fact_datasets": [
+      "rvr03",
+      "rvr05",
+      "rvr08",
+      "rvr051",
+      "rv028u",
+      "tt4661",
+      "js009",
+      "worldbank_estonia",
+      "eurostat_migr_imm4ctb",
+      "lfsa_eegatm"
+    ],
+    "excluded_from_facts": [
+      "ht140u",
+      "eh045",
+      "nh01"
+    ],
+    "note": "Source tables are retained intact. All dataset metadata remain in dim_dataset."
+  }
 }

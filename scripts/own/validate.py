@@ -31,10 +31,10 @@ def validate_database(db_path, require_all=False, require_full=False):
             raise ValueError(f'PRAGMA integrity_check: {integrity}')
         tables = {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         registries = {}
-        if 'dataset_registry' in tables:
-            cols = ('table_code', 'sqlite_table', 'provider', 'source_url', 'ui_url',
-                    'records', 'possible_cells', 'retrieved_at_utc', 'metadata_sha256', 'partial_years')
-            registries = {r[0]: dict(zip(cols, r)) for r in con.execute('SELECT '+','.join(cols)+' FROM dataset_registry')}
+        if 'source_registry' in tables:
+            cols = ('table_code','sqlite_table','provider','source_url','ui_url',
+                    'records','possible_cells','retrieved_at_utc','metadata_sha256','partial_years')
+            registries = {r[0]: dict(zip(cols,r)) for r in con.execute('SELECT '+','.join(cols)+' FROM source_registry')}
         # In older databases the data tables may exist but are not yet unified.
         findings = {}
         failures = []
@@ -43,7 +43,7 @@ def validate_database(db_path, require_all=False, require_full=False):
             if code not in registries:
                 findings[code] = {'table': table, 'status': 'not_loaded'}
                 if require_all:
-                    failures.append(f'{code}: no dataset_registry record (run unified ETL)')
+                    failures.append(f'{code}: no source_registry record (run unified ETL)')
                 continue
             registry = registries[code]
             if registry['sqlite_table'] != table:
@@ -64,19 +64,6 @@ def validate_database(db_path, require_all=False, require_full=False):
             findings[code] = {'table': table, 'status': 'loaded', 'rows': count,
                               'columns': columns, 'provider': registry['provider'],
                               'partial_years': bool(registry['partial_years'])}
-        # Validate both legacy and additional registry when present, not only configured datasets.
-        for registry_table, mapping in [('source_registry', [('table_code','records')]),
-                                        ('extra_source_registry', [('table_code','row_count')])]:
-            if registry_table not in tables:
-                continue
-            for code, rows in con.execute(f'SELECT table_code,{mapping[0][1]} FROM '+quote_identifier(registry_table)):
-                table = code.lower() if registry_table == 'source_registry' else code.lower()
-                if table not in tables:
-                    failures.append(f'{registry_table}: missing table {table}')
-                else:
-                    actual = con.execute('SELECT COUNT(*) FROM '+quote_identifier(table)).fetchone()[0]
-                    if actual != rows:
-                        failures.append(f'{registry_table}: {code} mismatch ({actual}!={rows})')
         report = {'generated_at_utc': datetime.now(timezone.utc).isoformat(),
                   'database': path.name, 'integrity_check': integrity, 'datasets': findings,
                   'errors': failures, 'status': 'ok' if not failures else 'failed'}

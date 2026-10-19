@@ -1,10 +1,10 @@
 {
-  "generated_at_utc": "2026-10-13T18:06:21.815809+00:00",
-  "database": "estonia_migration.sqlite",
+  "generated_at_utc": "2026-10-19T15:51:38.419879+00:00",
+  "database": "estonia_migration_metadata_test.sqlite",
   "integrity_check": "ok",
   "datasets": {
     "EH045": {
-      "table": "raw_eh045",
+      "table": "eh045",
       "status": "loaded",
       "rows": 294624,
       "columns": [
@@ -20,7 +20,7 @@
       "partial_years": false
     },
     "HT140U": {
-      "table": "raw_ht140u",
+      "table": "ht140u",
       "status": "loaded",
       "rows": 680400,
       "columns": [
@@ -38,7 +38,7 @@
       "partial_years": false
     },
     "JS009": {
-      "table": "raw_js009",
+      "table": "js009",
       "status": "loaded",
       "rows": 10656,
       "columns": [
@@ -99,7 +99,7 @@
       "partial_years": true
     },
     "RV028U": {
-      "table": "raw_rv028u",
+      "table": "rv028u",
       "status": "loaded",
       "rows": 4887,
       "columns": [
@@ -113,22 +113,72 @@
     },
     "RVR03": {
       "table": "rvr03",
-      "status": "not_loaded"
+      "status": "loaded",
+      "rows": 8892,
+      "columns": [
+        "Sex",
+        "Age group",
+        "Indicator",
+        "Type of migration",
+        "Year",
+        "RVR03: MIGRATION",
+        "source_table",
+        "retrieved_at_utc"
+      ],
+      "provider": "statistics_estonia",
+      "partial_years": false
     },
     "RVR05": {
       "table": "rvr05",
-      "status": "not_loaded"
+      "status": "loaded",
+      "rows": 6732,
+      "columns": [
+        "Country",
+        "Indicator",
+        "Sex",
+        "Year",
+        "RVR05: EXTERNAL MIGRATION",
+        "source_table",
+        "retrieved_at_utc"
+      ],
+      "provider": "statistics_estonia",
+      "partial_years": false
     },
     "RVR051": {
       "table": "rvr051",
-      "status": "not_loaded"
+      "status": "loaded",
+      "rows": 11880,
+      "columns": [
+        "Indicator",
+        "County",
+        "Country",
+        "Year",
+        "RVR051: EXTERNAL MIGRATION",
+        "source_table",
+        "retrieved_at_utc"
+      ],
+      "provider": "statistics_estonia",
+      "partial_years": false
     },
     "RVR08": {
       "table": "rvr08",
-      "status": "not_loaded"
+      "status": "loaded",
+      "rows": 27588,
+      "columns": [
+        "Indicator",
+        "Age group",
+        "Sex",
+        "Citizenship",
+        "Year",
+        "RVR08: EXTERNAL MIGRATION",
+        "source_table",
+        "retrieved_at_utc"
+      ],
+      "provider": "statistics_estonia",
+      "partial_years": false
     },
     "TT4661": {
-      "table": "raw_tt4661",
+      "table": "tt4661",
       "status": "loaded",
       "rows": 69375,
       "columns": [
@@ -140,6 +190,28 @@
       ],
       "provider": "statistics_estonia",
       "partial_years": false
+    },
+    "LFSA_EEGATM": {
+      "table": "lfsa_eegatm",
+      "status": "loaded",
+      "rows": 3608,
+      "columns": [
+        "DATAFLOW",
+        "LAST UPDATE",
+        "freq",
+        "emp_cont",
+        "mgstatus",
+        "age",
+        "sex",
+        "unit",
+        "geo",
+        "TIME_PERIOD",
+        "OBS_VALUE",
+        "OBS_FLAG",
+        "CONF_STATUS"
+      ],
+      "provider": "eurostat",
+      "partial_years": true
     }
   },
   "errors": [],

@@ -7,6 +7,9 @@ import json
 import math
 import os
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from metadata_store import ensure_metadata, upsert_source, log_import
 import re
 import sqlite3
 from datetime import datetime, timezone
@@ -124,23 +127,7 @@ def year_limit(v, n):
 
 
 def initialise(con):
-    con.execute('''CREATE TABLE IF NOT EXISTS extra_source_registry (
-      table_code TEXT PRIMARY KEY, provider TEXT NOT NULL, source_url TEXT NOT NULL,
-      ui_url TEXT NOT NULL, row_count INTEGER NOT NULL, possible_cells INTEGER NOT NULL,
-      batches INTEGER NOT NULL, retrieved_at_utc TEXT NOT NULL, metadata_sha256 TEXT NOT NULL,
-      partial_years INTEGER NOT NULL DEFAULT 0)''')
-    con.execute('''CREATE TABLE IF NOT EXISTS extra_load_log (
-      id INTEGER PRIMARY KEY, table_code TEXT NOT NULL, loaded_at_utc TEXT NOT NULL,
-      success INTEGER NOT NULL, message TEXT NOT NULL)''')
-    con.execute('''CREATE TABLE IF NOT EXISTS source_registry (
-      table_code TEXT PRIMARY KEY, records INTEGER NOT NULL,
-      retrieved_at_utc TEXT NOT NULL, source_url TEXT NOT NULL)''')
-    con.execute('''CREATE TABLE IF NOT EXISTS dataset_registry (
-      table_code TEXT PRIMARY KEY, sqlite_table TEXT NOT NULL UNIQUE,
-      provider TEXT NOT NULL, source_url TEXT NOT NULL, ui_url TEXT NOT NULL,
-      records INTEGER NOT NULL, possible_cells INTEGER NOT NULL,
-      retrieved_at_utc TEXT NOT NULL, metadata_sha256 TEXT NOT NULL,
-      partial_years INTEGER NOT NULL)''')
+    ensure_metadata(con)
     con.commit()
 
 
@@ -192,31 +179,8 @@ def replace_table(con, code, entry, url, meta, session, latest, limit):
         con.execute('BEGIN IMMEDIATE')
         con.execute(f'DROP TABLE IF EXISTS "{name}"')
         con.execute(f'ALTER TABLE "{staging}" RENAME TO "{name}"')
-        con.execute('''INSERT INTO extra_source_registry
-          (table_code, provider, source_url, ui_url, row_count, possible_cells, batches, retrieved_at_utc, metadata_sha256, partial_years)
-          VALUES (?,?,?,?,?,?,?,?,?,?)
-          ON CONFLICT(table_code) DO UPDATE SET
-          provider=excluded.provider, source_url=excluded.source_url, ui_url=excluded.ui_url,
-          row_count=excluded.row_count, possible_cells=excluded.possible_cells,
-          batches=excluded.batches, retrieved_at_utc=excluded.retrieved_at_utc,
-          metadata_sha256=excluded.metadata_sha256, partial_years=excluded.partial_years''',
-          (code, entry['provider'], url, entry['ui_url'], rows, count, batches, now, sha, int(latest is not None)))
-        # Maintain legacy migration registry for existing consumers.
-        if entry.get('add_provenance'):
-            con.execute('''INSERT INTO source_registry(table_code,records,retrieved_at_utc,source_url)
-                VALUES(?,?,?,?) ON CONFLICT(table_code) DO UPDATE SET
-                records=excluded.records,retrieved_at_utc=excluded.retrieved_at_utc,
-                source_url=excluded.source_url''', (code, rows, now, url))
-        con.execute('''INSERT INTO dataset_registry
-          (table_code,sqlite_table,provider,source_url,ui_url,records,possible_cells,
-           retrieved_at_utc,metadata_sha256,partial_years)
-          VALUES(?,?,?,?,?,?,?,?,?,?) ON CONFLICT(table_code) DO UPDATE SET
-          sqlite_table=excluded.sqlite_table,provider=excluded.provider,
-          source_url=excluded.source_url,ui_url=excluded.ui_url,
-          records=excluded.records,possible_cells=excluded.possible_cells,
-          retrieved_at_utc=excluded.retrieved_at_utc,
-          metadata_sha256=excluded.metadata_sha256,partial_years=excluded.partial_years''',
-          (code,name,entry['provider'],url,entry['ui_url'],rows,count,now,sha,int(latest is not None)))
+        upsert_source(con, code, entry['provider'], name, url, entry.get('ui_url'),
+                      rows, count, sha, int(latest is not None), now)
         con.commit()
         return rows
     except Exception:
@@ -255,11 +219,11 @@ def main():
                         print(f'{code}: metadata OK at {url}')
                     else:
                         rows = replace_table(con, code, entry, url, meta, session, args.latest_years, args.max_cells)
-                        con.execute('INSERT INTO extra_load_log(table_code,loaded_at_utc,success,message) VALUES (?,?,1,?)', (code, datetime.now(timezone.utc).isoformat(), f'{rows} rows'))
+                        log_import(con, code, entry['provider'], entry['sqlite_table'], 'api', 'success', rows, url, {'message': f'{rows} rows'})
                         con.commit()
                 except Exception as exc:
                     if con:
-                        con.execute('INSERT INTO extra_load_log(table_code,loaded_at_utc,success,message) VALUES (?,?,0,?)', (code, datetime.now(timezone.utc).isoformat(), str(exc)[:1000]))
+                        log_import(con, code, entry['provider'], entry['sqlite_table'], 'api', 'error', None, None, {'error': str(exc)[:1000]})
                         con.commit()
                     print(f'FAILED {code}: {exc}', flush=True)
                     raise

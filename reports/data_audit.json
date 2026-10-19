@@ -1,0 +1,1949 @@
+{
+  "database": "/home/alkuz/TSSU/estonia-migration-analysis/estonia-migration-analysis/data/estonia_migration.sqlite",
+  "generated_at_utc": "2026-10-17T17:28:19.328917+00:00",
+  "integrity_check": "ok",
+  "tables": {
+    "csv_import_log": {
+      "kind": "metadata",
+      "row_count": 2,
+      "column_count": 8,
+      "columns": [
+        {
+          "name": "id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "table_code",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "imported_at_utc",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "csv_sha256",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "file_name",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "row_count",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "encoding",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "delimiter",
+          "sqlite_type": "TEXT"
+        }
+      ]
+    },
+    "dataset_registry": {
+      "kind": "metadata",
+      "row_count": 7,
+      "column_count": 10,
+      "columns": [
+        {
+          "name": "table_code",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "sqlite_table",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "provider",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "source_url",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "ui_url",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "records",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "possible_cells",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "retrieved_at_utc",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "metadata_sha256",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "partial_years",
+          "sqlite_type": "INTEGER"
+        }
+      ]
+    },
+    "dim_age_group": {
+      "kind": "statistics",
+      "row_count": 48,
+      "column_count": 3,
+      "columns": [
+        {
+          "name": "age_group_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "source_dataset_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "age_label",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "age_group_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "source_dataset_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "age_label": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "dim_dataset": {
+      "kind": "statistics",
+      "row_count": 13,
+      "column_count": 4,
+      "columns": [
+        {
+          "name": "dataset_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "dataset_code",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "source_table",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "provider",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "dataset_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "dataset_code": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "source_table": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "provider": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "dim_indicator": {
+      "kind": "statistics",
+      "row_count": 146,
+      "column_count": 4,
+      "columns": [
+        {
+          "name": "indicator_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "source_dataset_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "indicator_label",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "unit_label",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "indicator_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "source_dataset_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "indicator_label": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "unit_label": {
+          "null": 0,
+          "empty_string": 139,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "dim_region": {
+      "kind": "statistics",
+      "row_count": 16,
+      "column_count": 3,
+      "columns": [
+        {
+          "name": "region_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "region_name",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "region_level",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "region_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "region_name": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "region_level": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "dim_sex": {
+      "kind": "statistics",
+      "row_count": 10,
+      "column_count": 2,
+      "columns": [
+        {
+          "name": "sex_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "sex_label",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "sex_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "sex_label": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "dim_year": {
+      "kind": "statistics",
+      "row_count": 67,
+      "column_count": 1,
+      "columns": [
+        {
+          "name": "year",
+          "sqlite_type": "INTEGER"
+        }
+      ],
+      "time_column": "year",
+      "time_min_max": [
+        1960,
+        2026
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "eh045": {
+      "kind": "statistics",
+      "row_count": 294624,
+      "column_count": 7,
+      "columns": [
+        {
+          "name": "Indicator",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Type of construction",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Type of permit",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "County",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Type of residential building",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Reference period",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "EH045: GRANTED BUILDING PERMITS AND COMPLETED DWELLINGS BY TYPE OF CONSTRUCTION, COUNTY AND TYPE OF RESIDENTIAL BUILDING",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Reference period",
+      "time_min_max": [
+        "2011 Q1",
+        "2026 Q2"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Indicator": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Type of construction": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Type of permit": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "County": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Type of residential building": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Reference period": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "EH045: GRANTED BUILDING PERMITS AND COMPLETED DWELLINGS BY TYPE OF CONSTRUCTION, COUNTY AND TYPE OF RESIDENTIAL BUILDING": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 180870
+        }
+      }
+    },
+    "eurostat_migr_imm4ctb": {
+      "kind": "statistics",
+      "row_count": 204,
+      "column_count": 10,
+      "columns": [
+        {
+          "name": "year",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "geo",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "c_birth",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "sex",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "age",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "freq",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "unit",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "agedef",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "value",
+          "sqlite_type": "REAL"
+        },
+        {
+          "name": "obs_flag",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "year",
+      "time_min_max": [
+        2008,
+        2024
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "geo": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "c_birth": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "sex": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "age": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "freq": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "unit": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "agedef": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "value": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "obs_flag": {
+          "null": 192,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "extra_load_log": {
+      "kind": "metadata",
+      "row_count": 6,
+      "column_count": 5,
+      "columns": [
+        {
+          "name": "id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "table_code",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "loaded_at_utc",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "success",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "message",
+          "sqlite_type": "TEXT"
+        }
+      ]
+    },
+    "extra_source_registry": {
+      "kind": "metadata",
+      "row_count": 5,
+      "column_count": 10,
+      "columns": [
+        {
+          "name": "table_code",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "provider",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "source_url",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "ui_url",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "row_count",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "possible_cells",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "batches",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "retrieved_at_utc",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "metadata_sha256",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "partial_years",
+          "sqlite_type": "INTEGER"
+        }
+      ]
+    },
+    "fact_observation": {
+      "kind": "statistics",
+      "row_count": 1223138,
+      "column_count": 14,
+      "columns": [
+        {
+          "name": "observation_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "dataset_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "source_rowid",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "source_measure",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "year",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "period_label",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "region_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "source_region_label",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "sex_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "age_group_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "indicator_id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "value_num",
+          "sqlite_type": "REAL"
+        },
+        {
+          "name": "value_raw",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "observation_flag",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "year",
+      "time_min_max": [
+        1960,
+        2026
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "observation_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "dataset_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "source_rowid": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "source_measure": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "period_label": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "region_id": {
+          "null": 329438,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "source_region_label": {
+          "null": 43608,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "sex_id": {
+          "null": 386931,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "age_group_id": {
+          "null": 1182846,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "indicator_id": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "value_num": {
+          "null": 454489,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "value_raw": {
+          "null": 126,
+          "empty_string": 726,
+          "special_missing_marker": 452751
+        },
+        "observation_flag": {
+          "null": 1219518,
+          "empty_string": 2143,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "ht140u": {
+      "kind": "statistics",
+      "row_count": 680400,
+      "column_count": 9,
+      "columns": [
+        {
+          "name": "Indicator",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Sex",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Mother tongue",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Education level",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "County of residence",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Form of study",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Language of instruction",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Reference period",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "HT140U: ENROLMENTS, DROPOUTS AND GRADE REPEATERS IN GENERAL EDUCATION",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Reference period",
+      "time_min_max": [
+        "2014",
+        "2025"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Indicator": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Sex": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Mother tongue": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Education level": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "County of residence": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Form of study": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Language of instruction": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Reference period": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "HT140U: ENROLMENTS, DROPOUTS AND GRADE REPEATERS IN GENERAL EDUCATION": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 180000
+        }
+      }
+    },
+    "international_import_log": {
+      "kind": "metadata",
+      "row_count": 2,
+      "column_count": 10,
+      "columns": [
+        {
+          "name": "id",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "provider",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "dataset",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "table_name",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "row_count",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "imported_at_utc",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "source_url",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "config_json",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "metadata_json",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "status",
+          "sqlite_type": "TEXT"
+        }
+      ]
+    },
+    "js009": {
+      "kind": "statistics",
+      "row_count": 10656,
+      "column_count": 4,
+      "columns": [
+        {
+          "name": "Degree/type of offence",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "County",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Year",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "JS009: RECORDED OFFENCES",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Year",
+      "time_min_max": [
+        "2006",
+        "2021"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Degree/type of offence": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "County": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "JS009: RECORDED OFFENCES": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 762
+        }
+      }
+    },
+    "lfsa_eegatm": {
+      "kind": "statistics",
+      "row_count": 3608,
+      "column_count": 13,
+      "columns": [
+        {
+          "name": "DATAFLOW",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "LAST UPDATE",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "freq",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "emp_cont",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "mgstatus",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "age",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "sex",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "unit",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "geo",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "TIME_PERIOD",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "OBS_VALUE",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "OBS_FLAG",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "CONF_STATUS",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "TIME_PERIOD",
+      "time_min_max": [
+        "2021",
+        "2025"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "DATAFLOW": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "LAST UPDATE": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "freq": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "emp_cont": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "mgstatus": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "age": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "sex": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "unit": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "geo": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "TIME_PERIOD": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "OBS_VALUE": {
+          "null": 0,
+          "empty_string": 726,
+          "special_missing_marker": 0
+        },
+        "OBS_FLAG": {
+          "null": 0,
+          "empty_string": 2143,
+          "special_missing_marker": 0
+        },
+        "CONF_STATUS": {
+          "null": 0,
+          "empty_string": 3608,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "nh01": {
+      "kind": "statistics",
+      "row_count": 5772,
+      "column_count": 39,
+      "columns": [
+        {
+          "name": "Year",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Diagnosis (ICD-10)",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Sex",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Estonia",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Harju county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number ..Tallinn",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Hiiu county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Ida-Viru county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number ..Narva",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Jõgeva county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Järva county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Lääne county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Lääne-Viru county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Põlva county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Pärnu county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Rapla county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Saare county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Tartu county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Valga county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Viljandi county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Number Võru county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Estonia",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Harju county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants ..Tallinn",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Hiiu county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Ida-Viru county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants ..Narva",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Jõgeva county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Järva county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Lääne county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Lääne-Viru county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Põlva county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Pärnu county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Rapla county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Saare county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Tartu county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Valga county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Viljandi county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Rate per 100 000 inhabitants Võru county",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Year",
+      "time_min_max": [
+        "2000",
+        "2025"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Diagnosis (ICD-10)": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Sex": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Number Estonia": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 969
+        },
+        "Number Harju county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number ..Tallinn": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Hiiu county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Ida-Viru county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number ..Narva": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 4671
+        },
+        "Number Jõgeva county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Järva county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Lääne county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Lääne-Viru county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Põlva county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Pärnu county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Rapla county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Saare county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Tartu county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Valga county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Viljandi county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Number Võru county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Estonia": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 969
+        },
+        "Rate per 100 000 inhabitants Harju county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants ..Tallinn": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Hiiu county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Ida-Viru county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants ..Narva": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 4671
+        },
+        "Rate per 100 000 inhabitants Jõgeva county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Järva county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Lääne county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Lääne-Viru county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Põlva county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Pärnu county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Rapla county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Saare county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Tartu county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Valga county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Viljandi county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        },
+        "Rate per 100 000 inhabitants Võru county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 2130
+        }
+      }
+    },
+    "rv028u": {
+      "kind": "statistics",
+      "row_count": 4887,
+      "column_count": 4,
+      "columns": [
+        {
+          "name": "Place of residence",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Sex",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Year",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "RV028U: MEAN ANNUAL POPULATION",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Year",
+      "time_min_max": [
+        "2017",
+        "2025"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Place of residence": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Sex": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "RV028U: MEAN ANNUAL POPULATION": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 3
+        }
+      }
+    },
+    "rvr03": {
+      "kind": "statistics",
+      "row_count": 8892,
+      "column_count": 8,
+      "columns": [
+        {
+          "name": "Sex",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Age group",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Indicator",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Type of migration",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Year",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "RVR03: MIGRATION",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "source_table",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "retrieved_at_utc",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Year",
+      "time_min_max": [
+        "2000",
+        "2025"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Sex": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Age group": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Indicator": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Type of migration": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "RVR03: MIGRATION": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "source_table": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "retrieved_at_utc": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "rvr05": {
+      "kind": "statistics",
+      "row_count": 6732,
+      "column_count": 7,
+      "columns": [
+        {
+          "name": "Country",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Indicator",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Sex",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Year",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "RVR05: EXTERNAL MIGRATION",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "source_table",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "retrieved_at_utc",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Year",
+      "time_min_max": [
+        "2004",
+        "2025"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Country": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Indicator": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Sex": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "RVR05: EXTERNAL MIGRATION": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 441
+        },
+        "source_table": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "retrieved_at_utc": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "rvr051": {
+      "kind": "statistics",
+      "row_count": 11880,
+      "column_count": 7,
+      "columns": [
+        {
+          "name": "Indicator",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "County",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Country",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Year",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "RVR051: EXTERNAL MIGRATION",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "source_table",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "retrieved_at_utc",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Year",
+      "time_min_max": [
+        "2004",
+        "2025"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Indicator": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "County": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Country": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "RVR051: EXTERNAL MIGRATION": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 3338
+        },
+        "source_table": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "retrieved_at_utc": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "rvr08": {
+      "kind": "statistics",
+      "row_count": 27588,
+      "column_count": 8,
+      "columns": [
+        {
+          "name": "Indicator",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Age group",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Sex",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Citizenship",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Year",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "RVR08: EXTERNAL MIGRATION",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "source_table",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "retrieved_at_utc",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Year",
+      "time_min_max": [
+        "2004",
+        "2025"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Indicator": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Age group": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Sex": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Citizenship": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "RVR08: EXTERNAL MIGRATION": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 8778
+        },
+        "source_table": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "retrieved_at_utc": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    },
+    "source_registry": {
+      "kind": "metadata",
+      "row_count": 4,
+      "column_count": 4,
+      "columns": [
+        {
+          "name": "table_code",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "records",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "retrieved_at_utc",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "source_url",
+          "sqlite_type": "TEXT"
+        }
+      ]
+    },
+    "sqlite_sequence": {
+      "kind": "metadata",
+      "row_count": 1,
+      "column_count": 2,
+      "columns": [
+        {
+          "name": "name",
+          "sqlite_type": ""
+        },
+        {
+          "name": "seq",
+          "sqlite_type": ""
+        }
+      ]
+    },
+    "tt4661": {
+      "kind": "statistics",
+      "row_count": 69375,
+      "column_count": 5,
+      "columns": [
+        {
+          "name": "Indicator",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Region/county",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Group of persons",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "Reference period",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "TT4661: LABOUR FORCE, EMPLOYED PERSONS, LABOUR FORCE PARTICIPATION RATE AND EMPLOYMENT RATE",
+          "sqlite_type": "TEXT"
+        }
+      ],
+      "time_column": "Reference period",
+      "time_min_max": [
+        "1989",
+        "2025"
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "Indicator": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Region/county": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Group of persons": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "Reference period": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "TT4661: LABOUR FORCE, EMPLOYED PERSONS, LABOUR FORCE PARTICIPATION RATE AND EMPLOYMENT RATE": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 38839
+        }
+      }
+    },
+    "worldbank_estonia": {
+      "kind": "statistics",
+      "row_count": 396,
+      "column_count": 6,
+      "columns": [
+        {
+          "name": "year",
+          "sqlite_type": "INTEGER"
+        },
+        {
+          "name": "indicator_code",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "value",
+          "sqlite_type": "REAL"
+        },
+        {
+          "name": "unit_source",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "obs_status",
+          "sqlite_type": "TEXT"
+        },
+        {
+          "name": "decimal_places",
+          "sqlite_type": "INTEGER"
+        }
+      ],
+      "time_column": "year",
+      "time_min_max": [
+        1960,
+        2025
+      ],
+      "exact_duplicate_rows": 0,
+      "column_quality": {
+        "year": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "indicator_code": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "value": {
+          "null": 126,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "unit_source": {
+          "null": 396,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "obs_status": {
+          "null": 396,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        },
+        "decimal_places": {
+          "null": 0,
+          "empty_string": 0,
+          "special_missing_marker": 0
+        }
+      }
+    }
+  }
+}

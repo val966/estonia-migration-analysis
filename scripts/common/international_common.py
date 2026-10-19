@@ -1,5 +1,8 @@
 """Transactional international-data loading, without changing existing tables."""
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from metadata_store import ensure_metadata, upsert_source, log_import
 import sqlite3, hashlib, json, time
 from datetime import datetime, timezone
 import requests
@@ -38,18 +41,16 @@ def publish(db, table, ddl, rows, insert_sql, provider, dataset, source_url, con
     with sqlite3.connect(db, timeout=30) as con:
         con.execute('PRAGMA foreign_keys=ON')
         con.execute('BEGIN IMMEDIATE')
-        con.execute('''CREATE TABLE IF NOT EXISTS international_import_log (
-           id INTEGER PRIMARY KEY AUTOINCREMENT, provider TEXT NOT NULL,
-           dataset TEXT NOT NULL, table_name TEXT NOT NULL, row_count INTEGER NOT NULL,
-           imported_at_utc TEXT NOT NULL, source_url TEXT NOT NULL,
-           config_json TEXT NOT NULL, metadata_json TEXT NOT NULL, status TEXT NOT NULL)''')
+        ensure_metadata(con)
         # Drop only named international table, never any original data.
         con.execute('DROP TABLE IF EXISTS ' + identifier(table))
         con.execute(ddl)
         con.executemany(insert_sql, rows)
         n = con.execute('SELECT COUNT(*) FROM '+identifier(table)).fetchone()[0]
         if n != len(rows): raise ValueError('Inserted count mismatch')
-        con.execute('''INSERT INTO international_import_log(provider,dataset,table_name,row_count,imported_at_utc,source_url,config_json,metadata_json,status)
-                       VALUES(?,?,?,?,?,?,?,?,?)''', (provider,dataset,table,n,stamp,source_url,config_json,metadata_json,'complete'))
+        upsert_source(con, table.upper(), provider, table, source_url, None,
+                      n, n, None, 0, stamp)
+        log_import(con, table.upper(), provider, table, 'api', 'complete', n,
+                   source_url, {'config_json': config_json, 'metadata_json': metadata_json}, stamp)
         con.commit()
     return n

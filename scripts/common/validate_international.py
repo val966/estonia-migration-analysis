@@ -10,20 +10,20 @@ def validate(db):
         if c.execute('PRAGMA integrity_check').fetchone()[0]!='ok': problems.append('SQLite integrity_check failed')
         if c.execute('PRAGMA foreign_key_check').fetchall(): problems.append('SQLite foreign_key_check failed')
         tables={x[0] for x in c.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-        if 'international_import_log' not in tables: problems.append('international_import_log missing')
+        if 'import_log' not in tables: problems.append('international_import_log missing')
         for provider, cfg in CONFIG.items():
             t=cfg['table']; info={'table':t}
             if t not in tables:
                 problems.append(t+' missing'); stats[provider]=info; continue
             info['rows']=c.execute('SELECT COUNT(*) FROM '+identifier(t)).fetchone()[0]
             if not info['rows']: problems.append(t+' is empty')
-            if 'international_import_log' in tables:
-                log=c.execute('''SELECT row_count,status,config_json FROM international_import_log
-                      WHERE provider=? AND table_name=? ORDER BY id DESC LIMIT 1''',(provider,t)).fetchone()
+            if 'import_log' in tables:
+                log=c.execute('''SELECT row_count,status,details_json FROM import_log
+                      WHERE provider=? AND sqlite_table=? ORDER BY id DESC LIMIT 1''',(provider,t)).fetchone()
                 if not log: problems.append(provider+' lacks import log')
                 else:
                     if log[0]!=info['rows'] or log[1]!='complete': problems.append(provider+' row count/status disagree with log')
-                    if json.loads(log[2])!=cfg: problems.append(provider+' configuration changed since download')
+                    if json.loads(json.loads(log[2]).get('config_json', '{}'))!=cfg: problems.append(provider+' configuration changed since download')
             if provider=='worldbank':
                 info['non_null']=c.execute('SELECT COUNT(*) FROM '+identifier(t)+' WHERE value IS NOT NULL').fetchone()[0]
                 codes={r[0] for r in c.execute('SELECT DISTINCT indicator_code FROM '+identifier(t))}

@@ -66,6 +66,12 @@ def main():
     min_year=int(rules['years']['min']); max_year=int(rules['years']['max'])
     if not 1800 <= min_year <= max_year <= 2200: raise ValueError('Invalid year range')
     missing_tokens={str(x).strip().casefold() for x in rules['missing_values']}
+    compact=rules.get('compact_model', {})
+    selected=set(compact.get('fact_datasets', TABLES))
+    invalid=selected-set(TABLES)
+    if invalid: raise ValueError(f'Unknown fact datasets: {sorted(invalid)}')
+    if not selected: raise ValueError('fact_datasets must be non-empty')
+    print('Fact datasets:', ', '.join(t for t in TABLES if t in selected))
     conn=sqlite3.connect(args.db)
     conn.row_factory=sqlite3.Row
     conn.execute('PRAGMA foreign_keys=ON')
@@ -95,6 +101,9 @@ def main():
                 cache[key]=conn.execute('SELECT last_insert_rowid()').fetchone()[0]
             return cache[key]
         for t in TABLES:
+            if t not in selected:
+                print(f'{t}: source kept, physical facts omitted; use a view on source')
+                continue
             did=dataset_ids[t]
             cols=[row[1] for row in conn.execute(f'PRAGMA table_info("{t}")')]
             year_c=column(cols,'Year','year','TIME_PERIOD','Reference period')

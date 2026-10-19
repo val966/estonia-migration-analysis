@@ -16,6 +16,9 @@ import re
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from metadata_store import ensure_metadata, upsert_source, log_import
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / '..' / 'config' / 'datasets.json'
@@ -98,16 +101,7 @@ def main():
         if existing and not args.replace:
             raise RuntimeError(f'{table} already exists. Use --replace explicitly to overwrite it.')
         conn.execute('BEGIN IMMEDIATE')
-        conn.execute('''CREATE TABLE IF NOT EXISTS dataset_registry (
-            table_code TEXT PRIMARY KEY, sqlite_table TEXT NOT NULL UNIQUE,
-            provider TEXT NOT NULL, source_url TEXT NOT NULL, ui_url TEXT NOT NULL,
-            records INTEGER NOT NULL, possible_cells INTEGER NOT NULL,
-            retrieved_at_utc TEXT NOT NULL, metadata_sha256 TEXT NOT NULL,
-            partial_years INTEGER NOT NULL)''')
-        conn.execute('''CREATE TABLE IF NOT EXISTS csv_import_log (
-            id INTEGER PRIMARY KEY, table_code TEXT NOT NULL, imported_at_utc TEXT NOT NULL,
-            csv_sha256 TEXT NOT NULL, file_name TEXT NOT NULL, row_count INTEGER NOT NULL,
-            encoding TEXT NOT NULL, delimiter TEXT NOT NULL)''')
+        ensure_metadata(conn)
         staging = '__csv_stage_' + re.sub(r'[^a-z0-9_]', '_', table.lower())
         conn.execute(f'DROP TABLE IF EXISTS {identifier(staging)}')
         conn.execute(f'CREATE TABLE {identifier(staging)} (' + ', '.join(f'{identifier(c)} TEXT' for c in cols) + ')')
@@ -120,27 +114,17 @@ def main():
         conn.execute(f'ALTER TABLE {identifier(staging)} RENAME TO {identifier(table)}')
         now = datetime.now(timezone.utc).isoformat()
         digest = hashlib.sha256(raw).hexdigest()
-        conn.execute('''INSERT INTO dataset_registry
-            (table_code, sqlite_table, provider, source_url, ui_url, records,
-             possible_cells, retrieved_at_utc, metadata_sha256, partial_years)
-            VALUES (?,?,?,?,?,?,?,?,?,?)
-            ON CONFLICT(table_code) DO UPDATE SET
-            sqlite_table=excluded.sqlite_table, provider=excluded.provider,
-            source_url=excluded.source_url, ui_url=excluded.ui_url,
-            records=excluded.records, possible_cells=excluded.possible_cells,
-            retrieved_at_utc=excluded.retrieved_at_utc,
-            metadata_sha256=excluded.metadata_sha256,
-            partial_years=excluded.partial_years''',
-            (code, table, entry['provider'], args.csv_file.resolve().as_uri(),
-             entry.get('ui_url', ''), count, count, now, digest, 1))
-        conn.execute('''INSERT INTO csv_import_log
-            (table_code, imported_at_utc, csv_sha256, file_name, row_count, encoding, delimiter)
-            VALUES (?,?,?,?,?,?,?)''',
-            (code, now, digest, args.csv_file.name, count, encoding, delimiter))
+        upsert_source(conn, code, entry['provider'], table, args.csv_file.resolve().as_uri(),
+                      entry.get('ui_url', ''), count, count, digest, 1, now)
+        log_import(conn, code, entry['provider'], table, 'csv', 'success', count,
+                   args.csv_file.resolve().as_uri(),
+                   {'csv_sha256': digest, 'file_name': args.csv_file.name,
+                    'encoding': encoding, 'delimiter': delimiter,
+                    'completeness': 'unverified'}, now)
         conn.commit()
         print(f'Imported {count} rows into {table} ({args.db})')
         print(f'CSV SHA-256: {digest}')
-        print('Completeness: NOT VERIFIED (dataset_registry.partial_years=1).')
+        print('Completeness: NOT VERIFIED (source_registry.partial_years=1).')
     except Exception:
         conn.rollback()
         raise
