@@ -74,7 +74,7 @@ def csv_frame(response):
 
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 CONFIG = json.loads((ROOT / 'config' / 'datasets.json').read_text(encoding='utf-8'))
 DEFAULT_DB = ROOT / 'data' / 'estonia_migration.sqlite'
 STAT_BASE = 'https://andmed.stat.ee/api/v1/en/stat'

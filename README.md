@@ -1,63 +1,45 @@
 # Estonia Migration Analysis
 
-Проект по сбору и анализу официальной статистики миграции Эстонии. Данные загружаются из **Statistics Estonia** в одну базу **SQLite**; SQL и Python используются для проверки качества, исследования тенденций и поиска аномалий.
+Projekt obsahuje oficiálne údaje o migrácii v Estónsku a súvisiace demografické, ekonomické a sociálne ukazovatele. Hlavným výstupom je databáza **SQLite**.
 
-**Источник:** [Statistics Estonia — Migration](https://andmed.stat.ee/en/stat/rahvastik__rahvastikusundmused__ranne) · [API](https://andmed.stat.ee/abi/API-manual.pdf)
+## Stiahnutie a otvorenie databázy
 
-## Технологии и версии
+Súbory na stiahnutie sa zverejňujú v sekcii [GitHub Releases](https://github.com/val966/estonia-migration-analysis/releases):
 
-| Компонент | Версия / требование | Назначение |
-|---|---|---|
-| Python | **3.10+** (первоначальная среда: 3.10.12) | Загрузка и анализ данных |
-| `pandas` | **>=2.1,<3** | Таблицы и вычисления |
-| `requests` | **>=2.31,<3** | Запросы к API Statistics Estonia |
-| SQLite / `sqlite3` | Версия зависит от установленного SQLite и Python | Хранение данных и SQL-запросы; модуль `sqlite3` входит в Python |
-| Git + GitHub | Версия Git зависит от среды | Совместная работа и история изменений |
-| VS Code + Ubuntu/WSL | Версии не фиксируются | Рекомендуемая среда разработки |
+- **`estonia_migration.sqlite`** – hotová databáza, ktorú možno priamo otvoriť v DBeaver alebo DB Browser for SQLite.
+- **`estonia_migration.sql.gz`** – komprimovaný SQL export na obnovenie databázy v SQLite.
 
-`requirements.txt` задаёт **диапазоны версий**, а не точные версии установленной среды. Проверить фактические версии:
+Na obnovenie z exportu (Linux, macOS alebo WSL) použite **nový, prázdny cieľový súbor**:
 
 ```bash
-python3 --version
-sqlite3 --version
-python3 -c "import sqlite3; print('SQLite (Python):', sqlite3.sqlite_version)"
-git --version
-# После активации .venv:
-python -m pip show pandas requests
+gzip -dc estonia_migration.sql.gz | sqlite3 -bail estonia_migration.sqlite
 ```
 
-## Структура проекта
+Kontrola obnovenej databázy:
 
-| Файл / каталог | Назначение |
-|---|---|
-| `README.md` | Общая инструкция по проекту |
-| `requirements.txt` | Обязательные зависимости Python |
-| `.gitignore` | Исключения для Git (виртуальная среда, локальные артефакты) |
-| `DATA_DICTIONARY.md` | Описание таблиц, полей и ограничений интерпретации |
-| `scripts/download.py` | Загрузка таблиц из API и обновление локальной SQLite-базы |
-| `scripts/inspect_db.py` | Список таблиц, столбцов, число строк и примеры записей |
-| `scripts/validate_release.py` | Проверка целостности БД; формирование отчёта и SHA-256 |
-| `scripts/anomalies.py` | Предварительный поиск резких изменений в RVR03 (порог 50%) |
-| `scripts/test_yearly_anomalies.py`* | Тест Modified Z-score для годовой внешней иммиграции |
-| `scripts/create_snapshot.py`* | Создание отдельных `.db`-снимков базы |
-| `sql/examples.sql` | Примеры запросов к исходным таблицам |
-| `sql/quality_checks.sql` | Проверки охвата, категорий, дубликатов и необычных значений |
-| `sql/migration_yearly.sql` | Временный VIEW годовой внешней миграции и проверка сальдо |
-| `data/estonia_migration.sqlite` | **Рабочая база** (создаётся при загрузке, не хранится в Git) |
-| `data/metadata/RVR*.json` | Метаданные таблиц, полученные из API |
-| `data/candidate_anomalies.csv` | Результат `anomalies.py` |
-| `data/yearly_anomalies.csv`* | Результат теста Modified Z-score |
-| `data/snapshots/*.db`* | Локальные снимки базы |
-| `release/validation_report.json` | Отчёт о проверке конкретной версии БД |
-| `release/SHA256SUMS` | SHA-256-хеш проверенной БД для сверки при передаче |
+```bash
+sqlite3 estonia_migration.sqlite "PRAGMA integrity_check; PRAGMA foreign_key_check;"
+```
 
-\* **Дополнительные файлы:** используй соответствующие команды только в том случае, если эти файлы созданы и добавлены в репозиторий. Папки `data/` и `release/` частично формируются автоматически и могут отсутствовать сразу после `git clone`.
+Správny výsledok je `ok` a žiadny výstup z kontroly cudzích kľúčov.
 
-**Текущие исходные таблицы:** `rvr03` (2000–2025), `rvr05`, `rvr08`, `rvr051` (2004–2025); служебная таблица `source_registry` хранит источники, даты получения и число строк. В дальнейшем планируется добавление демографических таблиц.
+## MySQL a PostgreSQL
 
-## Первый запуск (Ubuntu / VS Code)
+Databáza a SQL export sú pripravené pre **SQLite**. Pri použití MySQL alebo PostgreSQL treba údaje a schému skonvertovať; SQL export nie je priamo kompatibilný s týmito systémami.
 
-Выполняй команды **из корня проекта**, где лежит `requirements.txt`:
+## Obsah databázy
+
+- **13 zdrojových tabuliek** zo Statistics Estonia, Eurostatu, World Bank a TAI.
+- **6 dimenzií** (`dim_year`, `dim_region`, `dim_sex`, `dim_age_group`, `dim_indicator`, `dim_dataset`).
+- **1 faktová tabuľka** `fact_observation` – kompaktný analytický model pre 10 zdrojových tabuliek.
+- **2 pomocné tabuľky** `source_registry` a `import_log` – zdroje a história načítania.
+- **3 pohľady (VIEW)** `vw_education_source`, `vw_housing_source` a `vw_health_estonia` – prístup k ďalším trom zdrojovým tabuľkám bez kopírovania dát do faktovej tabuľky.
+
+Podrobnosti: [`docs/ER_MODEL.md`](docs/ER_MODEL.md), [`docs/DATA_MODEL_DICTIONARY.md`](docs/DATA_MODEL_DICTIONARY.md), [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md).
+
+## Inštalácia pre prácu so skriptmi
+
+Pre samotné otvorenie hotovej databázy nie je Python potrebný. Ak chcete spúšťať skripty, potrebujete **Python 3.10+**, SQLite a balíky zo súboru `requirements.txt`:
 
 ```bash
 python3 -m venv .venv
@@ -65,53 +47,69 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-Для следующих сеансов достаточно перейти в каталог проекта и выполнить `source .venv/bin/activate`.
+Nasledujúce príkazy sa spúšťajú **z koreňového priečinka projektu**. Pred načítaním alebo prestavbou dát si urobte zálohu databázy.
 
-## Основные команды
+## Skripty a odporúčané poradie
+
+| Poradie | Súbor | Účel |
+|---|---|---|
+| 1 | `scripts/own/etl.py` | Načítanie tabuliek zo Statistics Estonia a prípadne TAI cez PxWeb API; výber pomocou `--tables`. |
+| 2 | `scripts/own/import_csv.py` | Import ručne stiahnutých CSV, najmä `NH01` a `LFSA_EEGATM`; pri existujúcej tabuľke vyžaduje `--replace`. |
+| 3 | `scripts/common/load_worldbank.py` | Získanie ukazovateľov World Bank pre Estónsko. |
+| 4 | `scripts/common/load_eurostat.py` | Získanie údajov Eurostat (`migr_imm4ctb`). |
+| 5 | `scripts/own/validate.py` | Kontrola tabuliek zo `config/datasets.json` a registra zdrojov. |
+| 6 | `scripts/common/validate_international.py` | Kontrola obsahu a metadát World Bank a Eurostatu. |
+| 7 | `scripts/populate_model.py` | Naplnenie dimenzií a `fact_observation` podľa `config/processing_rules.json`. |
+| 8 | `scripts/inspect_db.py` | Výpis tabuliek, stĺpcov, počtu riadkov a ukážok záznamov. |
+| Voliteľne | `scripts/create_db_copy.py` | Vytvorenie časovo označenej záložnej `.db` kópie do `data/db_copies/`. |
+| Podporný modul | `scripts/common/international_common.py` | Spoločná logika pre medzinárodné API; **nespúšťa sa samostatne**. |
+
+**Dôležité:** Pomocný modul `scripts/metadata_store.py` je súčasťou projektu. Pred spustením ETL používajte opravenú verziu `scripts/own/etl.py` s cestami odvodenými od koreňa projektu. Pôvodné dáta pri opätovnom načítaní môžu byť prepísané; pracujte s kópiou databázy.
+
+### Príklady príkazov
+
+Kontrola hotovej databázy:
 
 ```bash
-# Полная загрузка/обновление всех четырёх исходных таблиц
-python scripts/download.py
-
-# Обновить одну исходную таблицу
-python scripts/download.py --tables RVR05
-
-# Посмотреть структуру и записи
+python scripts/own/validate.py --db data/estonia_migration.sqlite
+python scripts/common/validate_international.py --db data/estonia_migration.sqlite
 python scripts/inspect_db.py
-
-# Первичный поиск кандидатов в аномалии (RVR03)
-python scripts/anomalies.py
-
-# Дополнительный тест
-python scripts/test_yearly_anomalies.py
 ```
 
-**Важно:** `download.py` **заменяет содержимое запрашиваемой исходной таблицы**. Для воспроизводимого анализа используйте общий проверенный снимок, а не независимо перезагруженные данные.
-
-### SQL-проверки
-
-Понадобится установленный SQLite CLI (`sudo apt install sqlite3`). Из корня проекта:
+Po oprave chýbajúceho modulu a ciest je možné načítať údaje, napríklad:
 
 ```bash
-sqlite3 -readonly -header -column data/estonia_migration.sqlite < sql/quality_checks.sql
-sqlite3 -readonly -header -column data/estonia_migration.sqlite < sql/migration_yearly.sql
+python scripts/own/etl.py --tables RVR03 RVR05 --db data/estonia_migration.sqlite
+python scripts/own/import_csv.py cesta/k/NH01.csv --dataset NH01 --db data/estonia_migration.sqlite
+python scripts/common/load_worldbank.py --db data/estonia_migration.sqlite
+python scripts/common/load_eurostat.py --db data/estonia_migration.sqlite
 ```
 
-`migration_yearly.sql` создаёт **временный VIEW** только для текущего подключения, а затем выводит годовые показатели и проверку `immigration - emigration = net_migration`; исходная база не изменяется.
-
-### Снимок базы и подготовка к передаче
+Analytický model sa vytvára **až po načítaní všetkých zdrojov**:
 
 ```bash
-# Создать согласованную копию SQLite с расширением .db
-sqlite3 data/estonia_migration.sqlite ".backup 'data/estonia_migration_v0.1.db'"
-
-# Проверить именно эту копию и получить release/validation_report.json и SHA256SUMS
-python scripts/validate_release.py --db data/estonia_migration_v0.1.db
-
-# Проверить структуру файла
-sqlite3 -readonly data/estonia_migration_v0.1.db "PRAGMA integrity_check;"
+sqlite3 -bail data/estonia_migration.sqlite < sql/01_create_dimensions.sql
+sqlite3 -bail data/estonia_migration.sqlite < sql/02_create_facts.sql
+python scripts/populate_model.py --db data/estonia_migration.sqlite --rules config/processing_rules.json
+sqlite3 -bail data/estonia_migration.sqlite < sql/08_compact_views.sql
+sqlite3 -header -column data/estonia_migration.sqlite < sql/05_validate_model.sql
+sqlite3 -header -column data/estonia_migration.sqlite < sql/06_check_processing.sql
+sqlite3 -header -column data/estonia_migration.sqlite < sql/07_check_coverage.sql
 ```
 
-Если присутствует `scripts/create_snapshot.py`, альтернативный запуск: `python scripts/create_snapshot.py`. **`.db` и `.sqlite` — один формат SQLite; расширение не требует конвертации.**
+**Pozor:** Tvorba dimenzií a faktov je postup pre novú databázu. Na existujúcej databáze s naplneným modelom ju nespúšťajte bez kontroly; prepínač `--replace` v `populate_model.py` prestavia odvodené dáta.
 
-Для передачи другой команде публикуем **один неизменяемый `.db`-снимок** вместе с `release/validation_report.json` и `release/SHA256SUMS` в **GitHub Release**. Приложенные контрольные суммы должны относиться именно к публикуемому файлу. Для Python 3.10 в `validate_release.py` должна использоваться совместимая реализация SHA-256 без `hashlib.file_digest()`.
+## Konfigurácia a dokumentácia
+
+- `config/datasets.json` – zdroje, identifikátory a nastavenia domácich štatistických tabuliek.
+- `config/international.json` – konfigurácia World Bank a Eurostatu.
+- `config/processing_rules.json` – časový rozsah, chýbajúce hodnoty a pravidlá kompaktného modelu.
+- `sql/01_create_dimensions.sql`, `02_create_facts.sql` – vytvorenie analytickej schémy.
+- `sql/03_populate_dimensions.sql`, `04_populate_facts.sql` – informačné súbory; skutočné naplnenie robí Python skript `populate_model.py`.
+- `sql/05_validate_model.sql` až `07_check_coverage.sql` – kontrolné dotazy.
+- `sql/08_compact_views.sql` – definície troch SQL pohľadov.
+- `docs/` – dokumentácia modelu a spracovania; `reports/data_audit.json` – záznam skoršieho auditu.
+
+## Zdroje údajov
+
+[Statistics Estonia](https://andmed.stat.ee/en/stat) · [Eurostat](https://ec.europa.eu/eurostat) · [World Bank](https://data.worldbank.org/country/estonia) · [TAI](https://statistika.tai.ee/pxweb/en/Andmebaas/)

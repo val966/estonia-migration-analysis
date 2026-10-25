@@ -11,3 +11,19 @@ __pycache__/
 /data/*.sqlite
 /data/*.db
 /data/db_copies/
+
+# Generated database releases
+/release/*.sqlite
+/release/*.db
+/release/*.sql
+/release/*.sql.gz
+
+# Local database copies
+/data/db_copies/
+/data/*-wal
+/data/*-shm
+
+# Python and temporary files
+__pycache__/
+.pytest_cache/
+*.pyc
